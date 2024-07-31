@@ -1,0 +1,23 @@
+import site
+print(site.getsitepackages())
+
+# 크롬창 드리이버 업데이트 문제시 위 파이썬을 실행해서 뜨는 경로를 찾아 수정해주어야함
+#vi ~/anaconda3/envs/py39env/lib/python3.9/site-packages/webdriver_manager/core/driver_cache.py
+
+#for f in files:
+    # if 'LICENSE' in f:
+    #     continue
+    # if driver_name in f:
+    #     return f
+
+# 이 부분을
+
+# for f in files:
+    # if 'LICENSE' in f:
+    #     continue
+    # if 'THIRD_PARTY_NOTICES' in f:
+    #     continue
+    # if driver_name in f:
+    #     return f
+
+# 이렇게 수정 후 저장하면 해결.
