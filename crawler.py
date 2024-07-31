@@ -12,14 +12,12 @@ import time
 chrome_options = Options()
 chrome_options.add_experimental_option("detach", True)
 chrome_options.add_argument("window-size=400,1200")
-# chrome_options.add_argument("--headless")
+chrome_options.add_argument("--headless")
 
 chromedriver_path = ChromeDriverManager().install()
 driver = webdriver.Chrome(service=Service(chromedriver_path), options=chrome_options)
 
-# 업데이트 이슈 에러 발생시 아래와같이 경로 직접 설정해주어야함.
-# chromedriver_path = "/Users/jaekangchoi/.wdm/drivers/chromedriver/mac64/127.0.6533.72/chromedriver-mac-arm64/chromedriver"
-# driver = webdriver.Chrome(service=Service(chromedriver_path), options=chrome_options)
+
  
 def crawler_main(url):
     driver.get(url)
