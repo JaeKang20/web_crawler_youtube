@@ -1,0 +1,43 @@
+#issue1 해결
+ner = Pororo(task="ner", lang="ko")
+
+def mask_person_names(text):
+    entities = ner(text)
+    masked_text = text
+    person_names = []
+    for entity, entity_type in entities:
+        if entity_type == 'PERSON':
+            masked_name = '*' * len(entity)
+            masked_text = masked_text.replace(entity, masked_name)
+            person_names.append(entity)
+    return masked_text, person_names
+
+
+* 위코드는 사람 이름에 해당하는 글이 들어오게 될때 *로 마스킹 처리가 되게 한다.
+
+댓글과 대댓글 필드를 *로 처리하려면 아래 코드를 활용
+
+with open(input_file, 'r', encoding='utf-8') as f:
+    data = json.load(f)
+
+# 오리지날 댓글에 대하여 사람 이름 파싱
+for item in data:
+    if 'original_comment' in item:
+        original_text = item['original_comment']
+        masked_text, person_names = mask_person_names(original_text)
+        item['original_comment'] = masked_text
+        print(f"마스킹: {masked_text}")
+        print(f"추출된 인명: {person_names}")
+        print("-" * 40)
+    # 대댓글에 대하여 사람 이름 파싱
+    if 'replies' in item:
+        for reply in item['replies']:
+            if 'reply_comment' in reply:
+                original_text = reply['reply_comment']
+                masked_text, person_names = mask_person_names(original_text)
+                reply['reply_comment'] = masked_text
+                print(f"마스킹: {masked_text}")
+                print(f"추출된 인명: {person_names}")
+                print("-" * 40)
+with open(output_file, 'w', encoding='utf-8') as f:
+    json.dump(data, f, ensure_ascii=False, indent=4)
